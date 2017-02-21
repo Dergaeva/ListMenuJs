@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+	<title>Раскрывающийся список</title>
+	<style>
+		ul.expandable li {list-style-image: url('i/point.jpg')}
+		li ul.expandable {display: none;}
+	</style>
+	<script>
+		/*Опишите функцию setPlusIcon(), которая
+		 -устанавливает для элементов li значок [+], если этот элемент имеет вложенный список
+		 регистрирует функцию aClick  в качетсве обработчикв события onclick для всех ссылок */
+		/*
+		* Запистите функцию setPlusIcon() при загрузке страницы
+		* */
+		function setPlusIcon(){
+			var allLIs = document.getElementsByTagName("li");
+			for(var i=0; i<allLIs.length; i++){
+				var li = allLIs[i];
+				var allULs = li.getElementsByTagName("ul");
+				if(allULs.length > 0){
+					if(allULs[0].className == "expandable")
+						li.style.listStyleImage = "url('i/plus.png')";
+				}
+			}
+			////
+			var allA = document.getElementsByTagName("a");
+			for(var i=0; i<allA.length; i++){
+				allA[i].addEventListener("click", aClick, false);
+			}
+		}
+		window.onload = setPlusIcon;
+
+		/*
+		* Опишите функцию aclick(), которая обрабатывает щелчок по ссылке
+		* 1. Получите обьект - ссылку, по которой был сделан щелчок
+		* 2. Найдите родительский li
+		* 3. Найдите вложенный список
+		* 4. Если вложенных списков нет - разрешите переход по ссылке
+		* 5. Назначте вложенному списку нужные свойства и поменяйте иконку
+		* 6. Запретите переход по ссылке
+		* */
+
+		function aClick(e){
+			e = e || event;
+			var objA = e.target || e.srcElement;
+			var li = objA.parentNode;
+			var uls = li.getElementsByTagName("ul");
+			if(uls.length == 0) return true;
+
+			if(uls[0].style.display == "block"){
+				uls[0].style.display = "";
+				li.style.listStyleImage = "url('i/plus.png')";
+			}else{
+				uls[0].style.display = "block";
+				li.style.listStyleImage = "url('i/Minus_Circle_Green.png')";
+			}
+			try{
+				e.preventDefault();
+			}catch(x){
+				e.returnValue = false;
+			}
+
+		}
+
+	</script>
+
+</head>
+<body>
+<h1>Пример раскрывающегося списка</h1>
+<ul class="expandable">
+	<li>
+		<a href="#">Книги</a>
+		<ul class="expandable">
+			<li>
+				<a href="#">Отечественные</a>
+				<ul class="expandable">
+					<li><a href="#">Детективы</a></li>
+					<li><a href="#">Научная фантастика</a></li>
+					<li><a href="#">Исторические</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#">Зарубежные</a>
+				<ul class="expandable">
+					<li><a href="#">Детективы</a></li>
+					<li><a href="#">Научная фантастика</a></li>
+					<li><a href="#">Исторические</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a href="#">DVD</a>
+		<ul class="expandable">
+			<li>
+				<a href="#">Отечественные</a>
+				<ul class="expandable">
+					<li><a href="#">Детективы</a></li>
+					<li><a href="#">Научная фантастика</a></li>
+					<li><a href="#">Исторические</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#">Зарубежные</a>
+				<ul class="expandable">
+					<li><a href="#">Детективы</a></li>
+					<li><a href="#">Научная фантастика</a></li>
+					<li><a href="#">Исторические</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+
+
+
+</body>
+</html>
